@@ -3,19 +3,17 @@ FROM mcr.microsoft.com/playwright:v1.40.0-jammy
 
 WORKDIR /app
 
-# Copiar sólo el package.json del backend primero (para cachear dependencias)
+# Copiar archivos de dependencias del backend
 COPY backend/package*.json ./
 
-# Instalar dependencias
+# Instalar TODAS las dependencias (incluyendo devDependencies para ts-node)
 RUN npm install
 
-# Copiar el resto del código del backend
+# Copiar el código fuente del backend
 COPY backend/ .
-
-# Compilar TypeScript
-RUN npm run build
 
 # Railway inyecta la variable PORT automáticamente
 EXPOSE 3001
 
-CMD ["node", "dist/server.js"]
+# Ejecutar con ts-node directamente (igual que en desarrollo local)
+CMD ["npx", "ts-node", "server.ts"]
