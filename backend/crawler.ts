@@ -314,36 +314,14 @@ async function crawlWithFetch(url: string): Promise<SeoData | null> {
     }
 }
 
-async function crawlWithPlaywright(url: string): Promise<SeoData> {
-    const { chromium } = await import('playwright-extra');
-    const stealthPlugin = (await import('puppeteer-extra-plugin-stealth')).default;
-    chromium.use(stealthPlugin());
-
-    const browser = await chromium.launch({
-        headless: true,
-        args: [
-            '--disable-blink-features=AutomationControlled',
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-        ],
-    });
-
-    try {
-        const context = await browser.newContext({
-            userAgent: CHROME_HEADERS['User-Agent'],
-            locale: 'es-ES',
-            extraHTTPHeaders: { 'Accept-Language': CHROME_HEADERS['Accept-Language'] },
-        });
-        const page = await context.newPage();
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
-        await page.waitForTimeout(1500);
-        const html = await page.content();
-        return { ...extractSeoFromHtml(html, url), crawlMethod: 'playwright' };
-    } finally {
-        await browser.close();
-    }
+/**
+ * Layer 2: Playwright fallback — NOT available in production (no browser binaries).
+ * Returns an error immediately so the caller can handle it gracefully.
+ */
+async function crawlWithPlaywright(_url: string): Promise<SeoData> {
+    throw new Error('Playwright is not available in this environment (no browser binaries installed).');
 }
+
 
 // ── Main export ───────────────────────────────────────────────────────────────
 
