@@ -1,19 +1,20 @@
-# Usar la imagen oficial de Playwright con todas las dependencias de navegadores
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+# Imagen Node.js ligera — sin Playwright (Playwright sigue como fallback en código pero sin browser binaries)
+FROM node:20-slim
 
 WORKDIR /app
 
-# Copiar archivos de dependencias del backend
+# Copiar manifests de dependencias del backend
 COPY backend/package*.json ./
 
-# Instalar TODAS las dependencias (incluyendo devDependencies para ts-node)
-RUN npm install
+# Instalar dependencias (sin descargar binarios de Playwright)
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+RUN npm ci
 
-# Copiar el código fuente del backend
+# Copiar código fuente
 COPY backend/ .
 
-# Railway inyecta la variable PORT automáticamente
+# El servidor escucha en la variable PORT que Railway inyecta automáticamente
 EXPOSE 3001
 
-# Ejecutar con ts-node directamente (igual que en desarrollo local)
-CMD ["npx", "ts-node", "server.ts"]
+# ts-node con --transpile-only salta la verificación de tipos en runtime (más rápido)
+CMD ["npx", "ts-node", "--transpile-only", "server.ts"]
