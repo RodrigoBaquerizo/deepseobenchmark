@@ -1,4 +1,4 @@
-# Imagen Node.js ligera — sin Playwright (Playwright sigue como fallback en código pero sin browser binaries)
+# Imagen Node.js ligera — fetch + cheerio para SEO crawling
 FROM node:20-slim
 
 WORKDIR /app
@@ -6,15 +6,14 @@ WORKDIR /app
 # Copiar manifests de dependencias del backend
 COPY backend/package*.json ./
 
-# Instalar dependencias (sin descargar binarios de Playwright)
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+# Instalar dependencias
 RUN npm ci
 
 # Copiar código fuente
 COPY backend/ .
 
-# El servidor escucha en la variable PORT que Railway inyecta automáticamente
-EXPOSE 3001
+# Railway inyecta PORT dinámicamente (normalmente 8080)
+EXPOSE 8080
 
 # ts-node con --transpile-only salta la verificación de tipos en runtime (más rápido)
 CMD ["npx", "ts-node", "--transpile-only", "server.ts"]
