@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "backend/Dockerfile"
+buildCommand = ""
+
+[deploy]
+startCommand = "node dist/server.js"
+healthcheckPath = "/health"

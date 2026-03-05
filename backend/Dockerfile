@@ -1,24 +1,21 @@
-# Usar la imagen oficial de Playwright que ya tiene todas las dependencias de sistema y navegadores
+# Usar la imagen oficial de Playwright con todas las dependencias de navegadores
 FROM mcr.microsoft.com/playwright:v1.40.0-jammy
 
-# Directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package*.json ./
+# Copiar sólo el package.json del backend primero (para cachear dependencias)
+COPY backend/package*.json ./
 
-# Instalar dependencias (incluyendo las necesarias para build)
+# Instalar dependencias
 RUN npm install
 
 # Copiar el resto del código del backend
-COPY . .
+COPY backend/ .
 
 # Compilar TypeScript
 RUN npm run build
 
-# Exponer el puerto que usará Railway (Railway inyecta la variable PORT)
+# Railway inyecta la variable PORT automáticamente
 EXPOSE 3001
 
-# Comando para iniciar la aplicación
-# Usamos node sobre el archivo transpilado en dist/
 CMD ["node", "dist/server.js"]
