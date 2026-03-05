@@ -7,13 +7,21 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Soporte para múltiples orígenes (Local y Prod)
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    process.env.FRONTEND_URL // Se configurará en Railway
-].filter(Boolean) as string[];
-
-app.use(cors({ origin: allowedOrigins }));
+// Acepta localhost para desarrollo y cualquier subdominio de vercel.app para producción
+app.use(cors({
+    origin: (origin, callback) => {
+        // Permitir peticiones sin origin (ej: Postman, curl)
+        if (!origin) return callback(null, true);
+        // Permitir localhost
+        if (origin.startsWith('http://localhost')) return callback(null, true);
+        // Permitir cualquier subdominio de vercel.app
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        // Permitir el dominio exacto configurado en FRONTEND_URL
+        if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) return callback(null, true);
+        callback(new Error(`CORS: origin not allowed: ${origin}`));
+    },
+    credentials: true,
+}));
 app.use(express.json());
 
 // Health check
