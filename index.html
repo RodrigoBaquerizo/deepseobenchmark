@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep SEO Benchmark</title>
+    <meta name="description" content="Compara tu web con tus competidores usando análisis de inteligencia artificial con Gemini.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS Typography Plugin for markdown -->
+    <script src="https://unpkg.com/@tailwindcss/typography@0.5.x/dist/typography.min.js"></script>
+    <!-- Configure Tailwind to use custom colors -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+              // Primary brand — indigo-violet (from Deep SERP Insights)
+              'primary':       '#5B4FE8',
+              'primary-dark':  '#4338CA',
+              'primary-light': '#EEF2FF',
+              'accent':        '#8B5CF6',
+              'accent-light':  '#A78BFA',
+              // Surfaces
+              'surface':       '#FFFFFF',
+              'background':    '#F8F7FF',
+              'navy':          '#1A1A2E',
+              'navy-light':    '#252542',
+              // Text
+              'text-primary':  '#1A1A2E',
+              'text-secondary':'#6B7280',
+              'text-muted':    '#9CA3AF',
+              // Borders
+              'border-light':  '#E5E7EB',
+              'border-indigo': '#C7D2FE',
+              // Status
+              'success':       '#10B981',
+              'error':         '#EF4444',
+            }
+          }
+        },
+        plugins: [
+          require('@tailwindcss/typography'),
+        ],
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.1",
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-background font-sans antialiased text-text-primary">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

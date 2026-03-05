@@ -1,0 +1,5 @@
+{
+  "name": "Seep SEO Benchmark",
+  "description": "An application to benchmark a website's SEO against competitors, analyzing content, navigation, structured data, and key on-page elements. It provides visual insights and identifies content/section gaps.",
+  "requestFramePermissions": []
+}
